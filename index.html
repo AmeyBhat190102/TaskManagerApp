@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager</title>
+  <style>
+    .container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+.completed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+  const taskInput = document.getElementById("taskInput");
+  const addTaskBtn = document.getElementById("addTaskBtn");
+  const taskList = document.getElementById("taskList");
+
+  // Array to store tasks
+  let tasks = [];
+
+  // Function to render tasks
+  function renderTasks() {
+    // Clear existing tasks
+    taskList.innerHTML = "";
+
+    // Render each task
+    tasks.forEach(function(task, index) {
+      const li = document.createElement("li");
+      li.textContent = task.title;
+
+      if (task.completed) {
+        li.classList.add("completed");
+      }
+
+      // Add event listener to mark task as completed
+      li.addEventListener("click", function() {
+        task.completed = !task.completed;
+        renderTasks();
+      });
+
+      // Add event listener to delete task
+      li.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+        tasks.splice(index, 1);
+        renderTasks();
+      });
+
+      taskList.appendChild(li);
+    });
+  }
+
+  // Event listener for add task button
+  addTaskBtn.addEventListener("click", function() {
+    const title = taskInput.value.trim();
+
+    if (title !== "") {
+      const newTask = {
+        title: title,
+        completed: false
+      };
+
+      tasks.push(newTask);
+      renderTasks();
+
+      // Clear task input
+      taskInput.value = "";
+    }
+  });
+});
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Task Manager</h1>
+    <input id="taskInput" type="text" placeholder="Enter task...">
+    <button id="addTaskBtn">Add Task</button>
+    <ul id="taskList"></ul>
+  </div>
+
+</body>
+</html>
